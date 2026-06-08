@@ -2,7 +2,13 @@
 
 Strona-wizytówka konsultanta automatyzacji procesów biznesowych.
 Cel: pozyskiwanie klientów MŚP przez formularz kontaktowy.
-Język: polski. Domena docelowa: **zlotorowicz.com**.
+Język: polski.
+
+**STATUS: LIVE w produkcji.**
+- 🌐 Domena: **https://zlotorowicz.com** (Active, SSL; `www` też)
+- 🔗 Repo: **https://github.com/zloty05/zlotorowicz-strona** (publiczne, branch `master`)
+- ☁️ Cloudflare Pages projekt: **`zlotorowicz`** (połączony z GitHub — auto-deploy)
+- ✉️ Formularz → Resend → maile dochodzą na `kacper.zlotorowicz@outlook.com` ✅
 
 ---
 
@@ -13,14 +19,18 @@ Język: polski. Domena docelowa: **zlotorowicz.com**.
    poprzedzaj `NODE_OPTIONS="--use-system-ca"` (Bash) lub
    `$env:NODE_OPTIONS="--use-system-ca"` (PowerShell).
 
-2. **To repo git ma root w katalogu domowym `C:/Users/zloty`**, a jego `origin` to
-   `Konfigurator_promocyjny.git` — INNY projekt. Strona jest tylko podkatalogiem.
-   ➜ **Nigdy `git add -A` / `git push` z myślą, że wypchnie to stronę** — wypchnęłoby
-   pół katalogu domowego do cudzego repo. Deploy idzie przez Wrangler (patrz niżej),
-   nie przez git push tego repo.
+2. **Ten katalog ma WŁASNE, niezależne repo git** (`origin` = `zlotorowicz-strona`
+   na GitHub). Katalog domowy `C:/Users/zloty` nie jest już repozytorium git.
+   Commituj normalnie z tego katalogu — `git add` / `git commit` / `git push` są OK.
 
 3. **Sekrety nie trafiają do repo.** `.dev.vars` i `.env*` są w `.gitignore`.
-   Klucz Resend trzymany lokalnie w `.dev.vars`, na produkcji w panelu Cloudflare.
+   Klucz Resend trzymany lokalnie w `.dev.vars`, na produkcji jako zmienna
+   środowiskowa w panelu Cloudflare Pages. `.dev.vars.example` ma tylko placeholder.
+
+4. **Norton (false positive).** Bywa, że Norton (IDP.Helu.PSE*) blokuje `node.exe`/
+   `wrangler`/`powershell` przy operacjach sieciowych. To fałszywy alarm narzędzi dev.
+   Jeśli CLI nagle pada — to może być Norton; alternatywą jest deploy przez GitHub
+   (auto-build), który nie wymaga lokalnego CLI.
 
 ---
 
@@ -116,26 +126,45 @@ Każda sekcja ma `id` zgodne z menu: `uslugi`, `realizacje`, `o-mnie`, `kontakt`
 - Front: `Contact.jsx` (React Hook Form) → `fetch('/api/contact', POST json)`.
 - Funkcja: `functions/api/contact.js` — waliduje po stronie serwera, escapuje HTML,
   woła `https://api.resend.com/emails`.
-  - `from: 'Kacper Złotorowicz <kacper@zlotorowicz.com>'`
-  - `to: 'kacper@zlotorowicz.com'`, `reply_to` = e-mail z formularza
-- Wymaga sekretu `RESEND_API_KEY` (Resend → API keys).
-- **Realna wysyłka działa dopiero po weryfikacji domeny zlotorowicz.com w Resend**
-  (rekordy DKIM/SPF/DMARC w DNS). Bez tego funkcja zwraca 502 — to spodziewane.
+  - `FROM = 'Kacper Złotorowicz <kacper@zlotorowicz.com>'` — MUSI być na zweryfikowanej
+    domenie zlotorowicz.com (inaczej Resend odrzuci).
+  - `TO = 'kacper.zlotorowicz@outlook.com'` — skrzynka, którą realnie odbiera Kacper
+    (domena zlotorowicz.com nie ma własnej poczty). `reply_to` = e-mail z formularza.
+- Sekret `RESEND_API_KEY`: lokalnie w `.dev.vars`, na produkcji w Cloudflare Pages
+  (Settings → Environment variables).
+- **Status: działa.** Domena zlotorowicz.com jest zweryfikowana w Resend, test
+  zwrócił `{"ok":true}`, maile dochodzą. Odpowiedź funkcji: `200 {ok:true}` /
+  `400` (walidacja) / `502` (błąd Resend).
 
 ---
 
-## Deploy (Cloudflare Pages, przez Wrangler)
+## Deploy — automatyczny przez GitHub ✅
+
+Projekt Cloudflare Pages `zlotorowicz` jest **połączony z repo GitHub**. Deploy to
+po prostu **push na branch `master`**:
 
 ```bash
-NODE_OPTIONS="--use-system-ca" npx wrangler login          # jednorazowo, OAuth w przeglądarce
-NODE_OPTIONS="--use-system-ca" npm run build                # świeży dist/
-NODE_OPTIONS="--use-system-ca" npx wrangler pages deploy dist --project-name=zlotorowicz
+git add -A
+git commit -m "..."
+git push origin master       # ← Cloudflare sam: clone → npm run build → publish (z Functions)
 ```
 
-Po pierwszym deployu w panelu Cloudflare Pages:
-- **Settings → Environment variables:** dodać `RESEND_API_KEY` (Production + Preview).
-- **Custom domains:** podpiąć `zlotorowicz.com` (Cloudflare poprowadzi przez DNS).
-- W Resend: zweryfikować domenę `zlotorowicz.com`, żeby wysyłka maili ruszyła.
+Build w chmurze CF: command `npm run build`, output `dist`, framework Vite.
+Cloudflare wykrywa `functions/` i deployuje Functions automatycznie.
+Zmienna `RESEND_API_KEY` jest ustawiona w panelu (Settings → Environment variables).
+
+**Ważne (czego NIE robić):** nie wgrywać ZIP-em przez „Upload assets" — direct-upload
+NIE deployuje Pages Functions (formularz by nie działał) i tworzy projekt, którego
+nie da się połączyć z Git. Zostajemy przy auto-deployu z GitHub.
+
+Deploy ręczny z CLI (awaryjnie, gdy GitHub niedostępny):
+`NODE_OPTIONS="--use-system-ca" npx wrangler pages deploy dist --project-name=zlotorowicz`
+
+### Historia konfiguracji (dlaczego tak)
+Domena zlotorowicz.com była początkowo błędnie podpięta do projektu z ZIP-a (HTTP 522).
+Naprawione przez: usunięcie projektu direct-upload → utworzenie projektu połączonego z
+Git → podpięcie domeny przez panel (Custom domains → Set up → Activate; panel sam
+tworzy rekordy DNS, czego API z tokenem OAuth wranglera NIE robi — brak `dns_records:edit`).
 
 ---
 
@@ -147,16 +176,18 @@ Karty renderuje współdzielony `ui/ProjectCard.jsx`.
 
 ---
 
-## Placeholdery do uzupełnienia
+## Placeholdery do uzupełnienia (zostały)
 
-- [ ] Zdjęcie w sekcji „O mnie" (teraz placeholder z ikoną User)
-- [ ] Link „Polityka prywatności" w stopce (teraz `#`)
-- [ ] Weryfikacja domeny zlotorowicz.com w Resend (warunek działania maili)
+- [ ] Zdjęcie w sekcji „O mnie" (teraz placeholder z ikoną User w `About.jsx`)
+- [ ] Strona/sekcja „Polityka prywatności" — link w stopce prowadzi do `#`.
+      Warto dodać ze względu na RODO (formularz zbiera dane osobowe).
 
-## Dane już wstawione (nie placeholdery)
+## Gotowe (nie placeholdery)
 
-- E-mail / odbiorca formularza: **kacper@zlotorowicz.com**
-- LinkedIn: https://www.linkedin.com/in/kacper-z%C5%82otorowicz-5a68b4159/
+- ✅ Odbiorca formularza: `kacper.zlotorowicz@outlook.com`; `from:` `kacper@zlotorowicz.com`
+- ✅ LinkedIn: https://www.linkedin.com/in/kacper-z%C5%82otorowicz-5a68b4159/
+- ✅ Domena zlotorowicz.com live + zweryfikowana w Resend
+- ✅ Backend formularza działa (maile dochodzą)
 
 ---
 
