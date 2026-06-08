@@ -1,0 +1,7 @@
+# Skopiuj ten plik do .dev.vars i wklej swój klucz API z Resend (https://resend.com/api-keys).
+# .dev.vars jest w .gitignore — NIE commituj prawdziwego klucza.
+#
+# Na produkcji ten sam klucz ustaw w panelu Cloudflare Pages:
+#   Settings → Environment variables → RESEND_API_KEY (Production + Preview)
+
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

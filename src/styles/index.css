@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* offset dla sticky navbar przy anchor-scroll */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-surface text-ink font-sans antialiased;
+  }
+
+  /* Widoczny focus (accessibility) — złoty outline */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-gold ring-offset-2 ring-offset-surface;
+  }
+}
