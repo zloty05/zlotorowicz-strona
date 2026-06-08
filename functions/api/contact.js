@@ -4,8 +4,10 @@
 // Wymaga sekretu RESEND_API_KEY (panel Cloudflare Pages → Settings → Environment variables,
 // lokalnie: plik .dev.vars — patrz .dev.vars.example).
 
+// FROM musi być na zweryfikowanej domenie w Resend (zlotorowicz.com).
+// TO to skrzynka, którą realnie odbierasz — może być dowolny adres.
 const FROM = 'Kacper Złotorowicz <kacper@zlotorowicz.com>'
-const TO = 'kacper@zlotorowicz.com'
+const TO = 'kacper.zlotorowicz@outlook.com'
 
 const json = (data, status = 200) =>
   new Response(JSON.stringify(data), {
