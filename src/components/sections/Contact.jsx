@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Mail, CheckCircle2, Loader2 } from 'lucide-react'
 
@@ -160,6 +161,17 @@ function Contact() {
                 {isSubmitting && <Loader2 size={18} className="animate-spin" />}
                 {isSubmitting ? 'Wysyłam…' : 'Wyślij wiadomość'}
               </button>
+
+              <p className="text-xs text-ink-faint">
+                Wysyłając formularz, akceptujesz{' '}
+                <Link
+                  to="/polityka-prywatnosci"
+                  className="text-gold underline-offset-2 transition hover:text-gold-dark hover:underline"
+                >
+                  Politykę Prywatności
+                </Link>{' '}
+                i wyrażasz zgodę na kontakt w sprawie Twojego zapytania.
+              </p>
             </form>
           )}
         </div>

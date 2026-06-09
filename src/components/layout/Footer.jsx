@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function Footer() {
   return (
     <footer className="border-t border-surface-border bg-surface-card">
@@ -5,10 +7,9 @@ function Footer() {
         <p>
           © {new Date().getFullYear()} Kacper Złotorowicz · Automatyzacja Procesów Biznesowych
         </p>
-        {/* TODO: podlinkować realną Politykę prywatności */}
-        <a href="#" className="transition hover:text-gold">
+        <Link to="/polityka-prywatnosci" className="transition hover:text-gold">
           Polityka prywatności
-        </a>
+        </Link>
       </div>
     </footer>
   )

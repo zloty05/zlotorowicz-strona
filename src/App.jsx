@@ -4,6 +4,7 @@ import Footer from './components/layout/Footer'
 import Home from './pages/Home'
 import Portfolio from './pages/Portfolio'
 import ProjectDetail from './pages/ProjectDetail'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/portfolio/:slug" element={<ProjectDetail />} />
+          <Route path="/polityka-prywatnosci" element={<PrivacyPolicy />} />
         </Routes>
       </div>
       <Footer />

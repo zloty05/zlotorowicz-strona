@@ -42,7 +42,7 @@ Język: polski.
 - **Framer Motion 12** (animacje wejścia sekcji + wykres Hero)
 - **React Hook Form 7** (formularz kontaktowy)
 - **Lucide React** (ikony)
-- **Google Fonts:** DM Sans (300–700)
+- **Font:** DM Sans (300–700) — hostowany **lokalnie** (`public/fonts/`), bez CDN Google
 - **Hosting:** Cloudflare Pages + Pages Functions
 - **Mail:** Resend (przez funkcję serverless)
 
@@ -100,19 +100,21 @@ src/
     sections/      Hero, Services, Process, CaseStudies, About, Contact
     ui/            SectionLabel, Button, Card, Badge, Section (wrapper z animacją),
                    ProjectCard (współdzielony), Bolt (logo), AutomationChart (wykres Hero)
-  pages/           Home.jsx, Portfolio.jsx, ProjectDetail.jsx (podstrona projektu)
+  pages/           Home.jsx, Portfolio.jsx, ProjectDetail.jsx (podstrona projektu),
+                   PrivacyPolicy.jsx (Polityka Prywatności / RODO)
   data/            projects.js   (6 projektów + lista kategorii)
-  styles/          index.css     (Tailwind + focus gold + smooth scroll)
-  App.jsx          routing: / → Home, /portfolio → Portfolio, /portfolio/:slug → ProjectDetail
+  styles/          index.css     (Tailwind + @font-face DM Sans lokalnie + focus gold + smooth scroll)
+  App.jsx          routing: / → Home, /portfolio, /portfolio/:slug, /polityka-prywatnosci
   main.jsx         BrowserRouter
 functions/
   api/contact.js   Cloudflare Pages Function (onRequestPost) → Resend
 public/
   favicon.svg      błyskawica (marka)
   logo/            warianty logo + bolt (256/512/1024 px)
+  fonts/           DM Sans .woff2 (wagi 300–700 × subset latin + latin-ext) — hostowany lokalnie
   photo-kacper.jpg zdjęcie do „O mnie" (~108 KB, 3:4) — About.jsx pokazuje je, z fallbackiem do placeholdera
   _routes.json     {"include":["/api/*"]} — tylko API uruchamia Functions; reszta = SPA
-index.html         lang=pl, DM Sans, meta/OG
+index.html         lang=pl, meta/OG (font ładowany przez @font-face w styles/index.css)
 .dev.vars(.example) RESEND_API_KEY (lokalnie; .dev.vars w .gitignore)
 ```
 
@@ -191,10 +193,13 @@ nie jest zmyślona.
 
 ## Placeholdery do uzupełnienia (zostały)
 
-- [ ] Strona/sekcja „Polityka prywatności" — link w stopce prowadzi do `#`.
-      Warto dodać ze względu na RODO (formularz zbiera dane osobowe).
 - [ ] Rekomendacje/opinie i pasek liczb (np. „X projektów") — świadomie pominięte
       do czasu dostarczenia realnych cytatów/danych (nie zmyślamy).
+- [ ] **Banner cookies** — NIE potrzebny dziś (brak analityki/pikseli). Dodać DOPIERO
+      gdy podepniesz Google Analytics / piksel marketingowy: prosty komponent
+      `CookieConsent` (wybór w `localStorage`) ładujący skrypty śledzące *dopiero po
+      akceptacji* (consent-first) + aktualizacja sekcji „Cookies" w
+      `src/pages/PrivacyPolicy.jsx` (wymienić konkretne narzędzia/cele/okresy).
 
 ## Gotowe (nie placeholdery)
 
@@ -203,6 +208,12 @@ nie jest zmyślona.
 - ✅ Domena zlotorowicz.com live + zweryfikowana w Resend
 - ✅ Backend formularza działa (maile dochodzą)
 - ✅ Zdjęcie w „O mnie" (`public/photo-kacper.jpg`)
+- ✅ Polityka Prywatności (RODO) — podstrona `/polityka-prywatnosci`
+  (`src/pages/PrivacyPolicy.jsx`), podlinkowana w stopce + nota przy formularzu.
+  Administrator: osoba prywatna (Kacper Złotorowicz, kontakt e-mail, bez NIP/adresu).
+- ✅ Font DM Sans hostowany lokalnie (`public/fonts/*.woff2`, `@font-face` w
+  `src/styles/index.css`) — bez CDN Google, strona nie wysyła IP użytkowników do Google.
+  Subsety latin + latin-ext (polskie znaki), wagi 300/400/500/600/700.
 
 ---
 
