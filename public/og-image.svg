@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <!-- Tło: głęboki atramentowy granat (jak favicon) -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#202A45"/>
+      <stop offset="1" stop-color="#141B2E"/>
+    </linearGradient>
+    <!-- Błyskawica: złoty gradient -->
+    <linearGradient id="bolt" x1="380" y1="150" x2="520" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E9C45A"/>
+      <stop offset="0.5" stop-color="#C4992A"/>
+      <stop offset="1" stop-color="#A07A18"/>
+    </linearGradient>
+    <!-- Blask pod błyskawicą: wielostopowy zanik do zera (miękka krawędź) -->
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#D4AA3A" stop-opacity="0.42"/>
+      <stop offset="0.35" stop-color="#D4AA3A" stop-opacity="0.22"/>
+      <stop offset="0.65" stop-color="#D4AA3A" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#D4AA3A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Tło -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Subtelny złoty obrys -->
+  <rect x="6" y="6" width="1188" height="618" rx="0" fill="none" stroke="#C4992A" stroke-opacity="0.30" stroke-width="3"/>
+
+  <!-- Poświata wokół błyskawicy (lewa kolumna) -->
+  <circle cx="215" cy="315" r="255" fill="url(#glow)"/>
+
+  <!-- Błyskawica (geometria z favicon, scale 6.4; środek path ~(32.5,32) trafia na (215,315)) -->
+  <g transform="translate(7, 110) scale(6.4)">
+    <path
+      d="M36.5 8 L20 35 H29.5 L27 56 L45 26 H34.5 L40.5 8 Z"
+      fill="url(#bolt)"
+      stroke="#F1DA94"
+      stroke-width="0.8"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- Blok tekstu: wyrównany do lewej od x=470, wyśrodkowany w pionie -->
+  <text x="465" y="248" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="60" font-weight="700" fill="#FFFFFF">Kacper Złotorowicz</text>
+  <text x="465" y="320" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="40" font-weight="500" fill="#E9C45A">Automatyzacja Procesów</text>
+  <text x="465" y="370" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="40" font-weight="500" fill="#E9C45A">Biznesowych</text>
+  <text x="465" y="450" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#C2C8D6">Systemy, które przejmują żmudne,</text>
+  <text x="465" y="492" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#C2C8D6">powtarzalne zadania — szybko i tanio.</text>
+  <text x="465" y="568" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="26" font-weight="600" fill="#C4992A">zlotorowicz.com</text>
+</svg>

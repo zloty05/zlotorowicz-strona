@@ -109,14 +109,26 @@ src/
 functions/
   api/contact.js   Cloudflare Pages Function (onRequestPost) → Resend
 public/
-  favicon.svg      błyskawica (marka)
+  favicon.svg      błyskawica (marka) — poświata: miękki wielostopowy radialGradient
+  og-image.png     baner Open Graph 1200×630 (podgląd linku na LinkedIn/FB) — generowany
+  og-image.svg     źródło banera OG (edytuj TO, potem re-render skryptem)
   logo/            warianty logo + bolt (256/512/1024 px)
   fonts/           DM Sans .woff2 (wagi 300–700 × subset latin + latin-ext) — hostowany lokalnie
   photo-kacper.jpg zdjęcie do „O mnie" (~108 KB, 3:4) — About.jsx pokazuje je, z fallbackiem do placeholdera
+  robots.txt       Allow: / + wskazanie sitemapy
+  sitemap.xml      9 URL (/, /portfolio, 6× projekt, /polityka-prywatnosci) — generowany
   _routes.json     {"include":["/api/*"]} — tylko API uruchamia Functions; reszta = SPA
-index.html         lang=pl, meta/OG (font ładowany przez @font-face w styles/index.css)
+scripts/
+  build-og-image.mjs  renderuje og-image.svg → og-image.png (sharp + osadzony DM Sans woff2)
+  build-sitemap.mjs   generuje sitemap.xml ze slugów z src/data/projects.js
+index.html         lang=pl, meta/OG/Twitter/canonical (font przez @font-face w styles/index.css)
 .dev.vars(.example) RESEND_API_KEY (lokalnie; .dev.vars w .gitignore)
 ```
+
+**Grafiki generowane:** po edycji `public/og-image.svg` uruchom
+`NODE_OPTIONS="--use-system-ca" node scripts/build-og-image.mjs`. Po dodaniu/zmianie
+projektu w `src/data/projects.js` zregeneruj sitemapę: `node scripts/build-sitemap.mjs`.
+`favicon.svg` jest wektorowy — serwowany bez renderu.
 
 Sekcje strony głównej (kolejność w `Home.jsx`):
 Hero → Services → Process → CaseStudies → About → Contact.
@@ -214,6 +226,10 @@ nie jest zmyślona.
 - ✅ Font DM Sans hostowany lokalnie (`public/fonts/*.woff2`, `@font-face` w
   `src/styles/index.css`) — bez CDN Google, strona nie wysyła IP użytkowników do Google.
   Subsety latin + latin-ext (polskie znaki), wagi 300/400/500/600/700.
+- ✅ SEO/social: `index.html` ma komplet meta (description PL, OG z `og:image`,
+  Twitter Card, `canonical`). Baner podglądu `public/og-image.png` (marka: granat +
+  złota błyskawica, DM Sans), `robots.txt` + `sitemap.xml` (9 URL). Po deployu warto
+  zgłosić sitemapę w Google Search Console i odświeżyć cache w LinkedIn Post Inspector.
 
 ---
 
