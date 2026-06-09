@@ -25,6 +25,8 @@ function Navbar() {
   }, [])
 
   // Anchor-scroll działający też z podstron (/portfolio → /#id).
+  // Na stronie głównej dodatkowo ustawiamy hash w URL (kopiowalna kotwica, np. /#o-mnie)
+  // bez wyzwalania drugiego scrolla.
   const goTo = (id) => {
     setOpen(false)
     if (location.pathname !== '/') {
@@ -32,6 +34,7 @@ function Navbar() {
       return
     }
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    window.history.replaceState(null, '', `/#${id}`)
   }
 
   return (

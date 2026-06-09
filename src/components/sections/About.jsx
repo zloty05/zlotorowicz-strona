@@ -1,6 +1,11 @@
+import { useState } from 'react'
 import { Check, User } from 'lucide-react'
 import Section from '../ui/Section'
 import SectionLabel from '../ui/SectionLabel'
+
+// Zdjęcie Kacpra: wrzuć plik do public/ pod tą nazwą, a pojawi się automatycznie.
+// Dopóki pliku nie ma, pokazujemy placeholder (fallback po błędzie ładowania).
+const PHOTO_SRC = '/photo-kacper.jpg'
 
 const points = [
   'Rozumiem procesy biznesowe, nie tylko kod',
@@ -10,6 +15,8 @@ const points = [
 ]
 
 function About() {
+  const [photoOk, setPhotoOk] = useState(true)
+
   return (
     <Section id="o-mnie">
       <SectionLabel label="O mnie" />
@@ -22,9 +29,9 @@ function About() {
 
           <div className="mt-6 space-y-4 text-base text-ink-soft">
             <p>
-              Przez lata pracowałem z oprogramowaniem, ludźmi i technologią w środowiskach
-              gdzie liczy się niezawodność i precyzja. Nauczyłem się jednej rzeczy: zanim
-              zaproponuję rozwiązanie, muszę naprawdę zrozumieć problem.
+              Przez lata pracowałem z oprogramowaniem, automatyką przemysłową i ludźmi
+              w środowiskach gdzie liczy się niezawodność i precyzja. Nauczyłem się jednej
+              rzeczy: zanim zaproponuję rozwiązanie, muszę naprawdę zrozumieć problem.
             </p>
             <p>
               Dziś technologia pozwala automatyzować powtarzalne zadania w każdym biznesie —
@@ -49,15 +56,23 @@ function About() {
           </ul>
         </div>
 
-        {/* Placeholder zdjęcia (desktop) */}
+        {/* Zdjęcie (desktop) — realne jeśli plik istnieje, inaczej placeholder */}
         <div className="hidden md:block">
-          {/* TODO: podmienić na realne zdjęcie Kacpra */}
-          <div className="flex aspect-[3/4] items-center justify-center rounded-lg border border-dashed border-surface-border bg-surface-hover text-ink-faint">
-            <div className="text-center">
-              <User size={48} className="mx-auto opacity-40" />
-              <p className="mt-2 text-sm">Zdjęcie wkrótce</p>
+          {photoOk ? (
+            <img
+              src={PHOTO_SRC}
+              alt="Kacper Złotorowicz"
+              onError={() => setPhotoOk(false)}
+              className="aspect-[3/4] w-full rounded-lg border border-surface-border object-cover"
+            />
+          ) : (
+            <div className="flex aspect-[3/4] items-center justify-center rounded-lg border border-dashed border-surface-border bg-surface-hover text-ink-faint">
+              <div className="text-center">
+                <User size={48} className="mx-auto opacity-40" />
+                <p className="mt-2 text-sm">Zdjęcie wkrótce</p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </Section>

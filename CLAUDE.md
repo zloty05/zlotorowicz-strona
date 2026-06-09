@@ -100,15 +100,17 @@ src/
     sections/      Hero, Services, Process, CaseStudies, About, Contact
     ui/            SectionLabel, Button, Card, Badge, Section (wrapper z animacją),
                    ProjectCard (współdzielony), Bolt (logo), AutomationChart (wykres Hero)
-  pages/           Home.jsx, Portfolio.jsx
-  data/            projects.js   (3 projekty + lista kategorii)
+  pages/           Home.jsx, Portfolio.jsx, ProjectDetail.jsx (podstrona projektu)
+  data/            projects.js   (6 projektów + lista kategorii)
   styles/          index.css     (Tailwind + focus gold + smooth scroll)
-  App.jsx          routing: / → Home, /portfolio → Portfolio
+  App.jsx          routing: / → Home, /portfolio → Portfolio, /portfolio/:slug → ProjectDetail
   main.jsx         BrowserRouter
 functions/
   api/contact.js   Cloudflare Pages Function (onRequestPost) → Resend
 public/
   favicon.svg      błyskawica (marka)
+  logo/            warianty logo + bolt (256/512/1024 px)
+  photo-kacper.jpg (opcjonalnie) zdjęcie do „O mnie" — gdy plik istnieje, About.jsx go pokaże
   _routes.json     {"include":["/api/*"]} — tylko API uruchamia Functions; reszta = SPA
 index.html         lang=pl, DM Sans, meta/OG
 .dev.vars(.example) RESEND_API_KEY (lokalnie; .dev.vars w .gitignore)
@@ -117,7 +119,8 @@ index.html         lang=pl, DM Sans, meta/OG
 Sekcje strony głównej (kolejność w `Home.jsx`):
 Hero → Services → Process → CaseStudies → About → Contact.
 Każda sekcja ma `id` zgodne z menu: `uslugi`, `realizacje`, `o-mnie`, `kontakt`
-(+ `proces`). Hero = góra strony.
+(+ `proces`). Hero = góra strony. Navbar po kliknięciu menu ustawia też hash w URL
+(`/#o-mnie`) przez `history.replaceState` — kopiowalne kotwice.
 
 ---
 
@@ -170,17 +173,30 @@ tworzy rekordy DNS, czego API z tokenem OAuth wranglera NIE robi — brak `dns_r
 
 ## Dane projektów — src/data/projects.js
 
-3 realizacje (slug): `translatescorm` (flagship, SaaS), `ksiega-kancelaryjna` (AI),
-`etykiety-dymo` (Automatyzacja biurowa). Strona /portfolio filtruje po `category`.
-Karty renderuje współdzielony `ui/ProjectCard.jsx`.
+6 realizacji (slug): `translatescorm` (flagship, SaaS), `meterbill` (SaaS),
+`draft-generator` (AI), `ksiega-kancelaryjna` (AI), `konfigurator-wago` (Automatyzacja
+biurowa), `etykiety-dymo` (Automatyzacja biurowa). Strona /portfolio filtruje po `category`.
+
+Schemat projektu zasila **kartę** i **podstronę** `/portfolio/:slug`:
+- Pola karty (`ui/ProjectCard.jsx`): `badge`, `title`, `problem`, `results`, `stack`.
+- Pola podstrony (`pages/ProjectDetail.jsx`): `tagline`, `overview`, `how[]`,
+  `features[]`, `benefits[]`, `solution`, opcjonalnie `liveUrl`.
+- `results`: para `{label, before, after}` albo `{label, value}`.
+
+Cała karta `ProjectCard` jest linkiem do `/portfolio/:slug`. Treść opisów pochodzi
+z realnej dokumentacji projektów (README/CLAUDE.md w katalogu `PROJEKTY KZ 2026`),
+nie jest zmyślona.
 
 ---
 
 ## Placeholdery do uzupełnienia (zostały)
 
-- [ ] Zdjęcie w sekcji „O mnie" (teraz placeholder z ikoną User w `About.jsx`)
+- [ ] Zdjęcie w sekcji „O mnie" — wystarczy wrzucić `public/photo-kacper.jpg`
+      (proporcja 3:4). `About.jsx` pokaże je automatycznie; bez pliku → placeholder.
 - [ ] Strona/sekcja „Polityka prywatności" — link w stopce prowadzi do `#`.
       Warto dodać ze względu na RODO (formularz zbiera dane osobowe).
+- [ ] Rekomendacje/opinie i pasek liczb (np. „X projektów") — świadomie pominięte
+      do czasu dostarczenia realnych cytatów/danych (nie zmyślamy).
 
 ## Gotowe (nie placeholdery)
 
