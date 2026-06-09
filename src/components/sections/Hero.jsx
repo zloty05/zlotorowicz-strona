@@ -18,7 +18,7 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <SectionLabel label="Business Process Automation" />
+          <SectionLabel label="Automatyzacja Procesów Biznesowych" />
 
           <h1 className="text-4xl font-bold leading-tight text-ink sm:text-5xl">
             Powtarzalna praca

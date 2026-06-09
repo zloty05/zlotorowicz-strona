@@ -18,7 +18,7 @@ function About() {
         {/* Tekst */}
         <div>
           <h2 className="text-3xl font-bold text-ink">Kacper Złotorowicz</h2>
-          <p className="mt-1 text-base text-gold">Business Process Automation</p>
+          <p className="mt-1 text-base text-gold">Automatyzacja Procesów Biznesowych</p>
 
           <div className="mt-6 space-y-4 text-base text-ink-soft">
             <p>
