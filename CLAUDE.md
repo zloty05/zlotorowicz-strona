@@ -97,7 +97,7 @@ eyebrow `text-xs tracking-widest uppercase text-gold`.
 src/
   components/
     layout/        Navbar.jsx, Footer.jsx
-    sections/      Hero, Problem, Services, Process, CaseStudies, About, Contact
+    sections/      Hero, Services, Process, CaseStudies, About, Contact
     ui/            SectionLabel, Button, Card, Badge, Section (wrapper z animacją),
                    ProjectCard (współdzielony), Bolt (logo), AutomationChart (wykres Hero)
   pages/           Home.jsx, Portfolio.jsx
@@ -115,9 +115,9 @@ index.html         lang=pl, DM Sans, meta/OG
 ```
 
 Sekcje strony głównej (kolejność w `Home.jsx`):
-Hero → Problem → Services → Process → CaseStudies → About → Contact.
+Hero → Services → Process → CaseStudies → About → Contact.
 Każda sekcja ma `id` zgodne z menu: `uslugi`, `realizacje`, `o-mnie`, `kontakt`
-(+ `problem`, `proces`). Hero = góra strony.
+(+ `proces`). Hero = góra strony.
 
 ---
 
