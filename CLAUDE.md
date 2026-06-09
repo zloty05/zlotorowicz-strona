@@ -110,7 +110,7 @@ functions/
 public/
   favicon.svg      błyskawica (marka)
   logo/            warianty logo + bolt (256/512/1024 px)
-  photo-kacper.jpg (opcjonalnie) zdjęcie do „O mnie" — gdy plik istnieje, About.jsx go pokaże
+  photo-kacper.jpg zdjęcie do „O mnie" (~108 KB, 3:4) — About.jsx pokazuje je, z fallbackiem do placeholdera
   _routes.json     {"include":["/api/*"]} — tylko API uruchamia Functions; reszta = SPA
 index.html         lang=pl, DM Sans, meta/OG
 .dev.vars(.example) RESEND_API_KEY (lokalnie; .dev.vars w .gitignore)
@@ -191,8 +191,6 @@ nie jest zmyślona.
 
 ## Placeholdery do uzupełnienia (zostały)
 
-- [ ] Zdjęcie w sekcji „O mnie" — wystarczy wrzucić `public/photo-kacper.jpg`
-      (proporcja 3:4). `About.jsx` pokaże je automatycznie; bez pliku → placeholder.
 - [ ] Strona/sekcja „Polityka prywatności" — link w stopce prowadzi do `#`.
       Warto dodać ze względu na RODO (formularz zbiera dane osobowe).
 - [ ] Rekomendacje/opinie i pasek liczb (np. „X projektów") — świadomie pominięte
@@ -204,6 +202,7 @@ nie jest zmyślona.
 - ✅ LinkedIn: https://www.linkedin.com/in/kacper-z%C5%82otorowicz-5a68b4159/
 - ✅ Domena zlotorowicz.com live + zweryfikowana w Resend
 - ✅ Backend formularza działa (maile dochodzą)
+- ✅ Zdjęcie w „O mnie" (`public/photo-kacper.jpg`)
 
 ---
 
