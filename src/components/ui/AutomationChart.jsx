@@ -45,8 +45,7 @@ function AutomationChart() {
           d={area}
           fill="url(#areaFill)"
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         />
 
@@ -57,9 +56,8 @@ function AutomationChart() {
           stroke="url(#lineStroke)"
           strokeWidth="3"
           strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
           transition={{ duration: 1.1, ease: 'easeInOut' }}
         />
 
@@ -72,9 +70,9 @@ function AutomationChart() {
           stroke="#fff"
           strokeWidth="2"
           initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
+          animate={{ scale: 1 }}
           transition={{ duration: 0.3, delay: 1.1 }}
+          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
         />
 
         {/* Etykieta przy krzywej */}
